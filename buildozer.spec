@@ -1,22 +1,15 @@
 [app]
 title = SARA
-package.name = sara_project
-package.domain = org.anif
+package.name = sara
+package.domain = org.anif.sara
 source.dir = .
-source.include_exts = py,png,jpg,kv,atlas,json
-version = 1.0.0
-requirements = python3,kivy,requests
+source.include_exts = py,png,jpg,kv,atlas
+version = 1.0
+requirements = python3,kivy==2.2.1
 orientation = portrait
-fullscreen = 1
-android.permissions = INTERNET
-
-[android]
-api = 35
-minapi = 21
-ndk = 25b
-android.archs = arm64-v8a
+fullscreen = 0
+android.archs = arm64-v8a, armeabi-v7a
+android.allow_backup = True
 android.accept_sdk_license = True
-
-[buildozer]
-log_level = 2
-warn_on_root = 1
+android.api = 33
+android.minapi = 21
