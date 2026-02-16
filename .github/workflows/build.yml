@@ -3,8 +3,6 @@ name: Build SARA APK
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
@@ -14,26 +12,29 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
       with:
-        java-version: '17'
-        distribution: 'temurin'
+        python-version: '3.10'
 
-    - name: Make Gradlew Executable
+    - name: Install Dependencies
       run: |
-        find . -name gradlew -exec chmod +x {} +
+        pip install --upgrade pip
+        pip install buildozer cython git+https://github.com/kivy/kivy.git
 
-    - name: Build with Gradle
+    - name: Install System Dependencies
       run: |
-        if [ -f "./gradlew" ]; then
-          ./gradlew assembleDebug
-        else
-          find . -name gradlew -execdir ./gradlew assembleDebug \;
-        fi
+        sudo apt update
+        sudo apt install -y git zip unzip autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+        sudo apt install -y openjdk-17-jdk
+
+    - name: Build with Buildozer
+      run: |
+        yes | buildozer android debug
+      continue-on-error: false
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: S.A.R.A-SuperUser-Build
-        path: "**/build/outputs/apk/debug/*.apk"
+        name: S.A.R.A-Python-Build
+        path: bin/*.apk
