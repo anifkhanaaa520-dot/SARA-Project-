@@ -20,8 +20,7 @@ jobs:
     - name: Install System Dependencies
       run: |
         sudo apt update
-        sudo apt install -y git zip unzip autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev openjdk-17-jdk
-        sudo apt install -y libwayland-dev libx11-dev libxkbcommon-x11-dev libgles2-mesa-dev
+        sudo apt install -y git zip unzip autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev openjdk-17-jdk libwayland-dev libx11-dev libxkbcommon-x11-dev libgles2-mesa-dev
 
     - name: Install Buildozer and Cython
       run: |
@@ -32,12 +31,5 @@ jobs:
       run: |
         yes | buildozer android debug
       env:
-        # This will automatically accept all Android SDK licenses
         APP_ANDROID_ACCEPT_SDK_LICENSE: "True"
-      continue-on-error: false
-
-    - name: Upload APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: S.A.R.A-SuperUser-Build
-        path: bin/*.apk
+        GRADLE_OPTS: "-Dorg.gradle.daemon=false"
